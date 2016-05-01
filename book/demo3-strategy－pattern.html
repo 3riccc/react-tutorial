@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo3 strategy pattern</title>
+</head>
+<body>
+	<script>
+		var data = {
+			username : "xiaoMing",
+			password : 'fkgrtwall',
+			email : 'xiaoming7654@163.com',
+		}
+		var validation = {
+			// 验证数据的函数
+			validate : function (data){
+				for(var index in data){
+					// 如果这项没有配置验证规则，则返回失败
+					if(!this.checkByType.hasOwnProperty(index)){
+						console.log(index + "尚未配置验证规则");
+						continue;
+					};
+					// 调用函数进行验证
+					var res = this.checkByType[index](data[index]);
+					// 当有一项验证不成功，则返回失败，并弹窗显示失败原因
+					if(!res.pass){
+						alert(res.msg);
+						return false;
+					}
+				}
+			},
+			// 按照每项数据的类型来验证
+			checkByType : {
+				// 用户名验证
+				username : function (value){
+					var res = {};
+					res.pass = (!/[^a-z0-9]/i.test(value) && value.length > 4 && value.length < 16);
+					if(value.length < 4){
+						res.msg = "用户名长度过短";
+					}else if(value.length > 16){
+						res.msg = "用户名长度过长";
+					}else if(/[^a-z0-9]/i.test(value)){
+						res.msg = "用户名只能由数字和字母组成";
+					}
+					return res;
+				},
+				// 邮箱验证
+				email : function (value){
+					var res = {};
+					if(/^(\w){1,20}@(\w){1,10}((\.\w{1,8}){1,4})$/.test(value)){
+						res.pass = true;
+					}else{
+						res.pass = false;
+						res.msg = "邮箱格式不符合规范";
+					}
+					return res;
+				},
+				// 密码验证
+				password : function (value){
+					var res = {};
+					if(/[^0-9]/i.test(value) && value.length > 8){
+						res.pass = true;
+					}else if(!/[^0-9]/i.test(value)){
+						res.msg = "密码不能均为数字";
+					}else{
+						res.msg = "密码长度不能短与8";
+					}
+					return res;
+				}
+			}
+		};
+		validation.validate(data);
+	</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo 1</title>
+	<style>
+	.container{
+		/*外边距*/
+		margin:0 auto;
+		width:150px;
+		height: 250px;
+		/*视角距离物体的距离是1000px*/
+		perspective:1000px;
+		/*让所有子元素遵循3d变换规则*/
+		transform-style:preserve-3d;
+	}
+	/*书脊*/
+	.spine{
+		/*绝对定位*/
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 4px;
+		height: 217px;
+		background-color: #eee;
+		/*左边框*/
+		border-left: 2px solid #999;
+		/*右边框*/
+		border-right: 2px solid #999;
+		/*沿着y轴旋转45度*/
+		transform: rotateY(45deg);
+	}
+	/*封底*/
+	.back{
+		position: absolute;
+		left: 7px;
+		top: 0;
+		width: 160px;
+		height: 215px;
+		/*定义旋转原点，距离它本身的左边是0，距离它本身的上边是50%*/
+		transform-origin:0 50%;
+		transform:rotateY(-20deg);
+		background-color: #FFFBEC;
+		border:1px solid #999;
+	}
+	/*内页*/
+	.page{
+		position: absolute;
+		top: 0;
+		left: 5.14px;
+		width: 160px;
+		height: 215px;
+		box-sizing: border-box;
+		border: 1px solid #eee;
+		/*将旋转轴定位到封面左边*/
+		transform-origin:0 50%;
+		background-image:linear-gradient(to right,#eee,#fff);
+		/*当transform属性发生变化时，过渡时间为1s*/
+		transition: transform 1s;
+		/*右上角边框圆角化，圆角半径是5px*/
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+	/*最后一页*/
+	.page1{
+		left: 7.3px;
+		/*旋转－30度*/
+		transform:  rotateY(-30deg);
+	}
+	.page2{
+		left: 6.3px;
+		/*旋转－32度*/
+		transform:  rotateY(-32deg);
+		/*这页有字，所以要水平居中*/
+		text-align: center;
+		font-size: 12px;
+		padding-top: 51px;
+	}
+	.page3{
+		left: 5.3px;
+		transform:  rotateY(-34deg);
+	}
+	.page4{
+		left: 4.3px;
+		transform:  rotateY(-36deg);
+	}
+	.page5{
+		left: 3.3px;
+		transform:  rotateY(-38deg);
+	}
+	/*封面*/
+	.front{
+		position: absolute;
+		top: 0;
+		left: 3.3px;
+		width: 160px;
+		height: 215px;
+		transform-origin:0 50%;
+		/*背景图片地址*/
+		background-image: url(demo1-0.jpg);
+		/*背景图片不重复*/
+		background-repeat: no-repeat;
+		/*背景图片充满整个div*/
+		background-size: cover;
+		transform:  rotateY(-38deg);
+		/*当transform属性值发生变化时，用1s的时间过渡到变化之后的值*/
+		transition: transform 1s;
+		border: 1px solid #999;
+		/*背面不可见*/
+		/*backface-visibility:hidden;*/
+	}
+	/*封面的背面，当封面旋转到背后时显现出来*/
+	.front-back{
+		position: absolute;
+		top: 0;
+		left: 3.3px;
+		width: 160px;
+		height: 215px;
+		transform-origin:0 50%;
+		background-color: #FFFBEC;
+		transform:  rotateY(-38deg);
+		transition: transform 1s;
+		border: 1px solid #999;
+	}
+	/*鼠标上去的效果*/
+	/*当鼠标滑倒container上面时候，里面的封面变成了旋转－145度*/
+	.container:hover .front{transform: rotateY(-145deg);}
+	/*当鼠标滑倒container上面时候，里面的封面背面变成了旋转－145度*/
+
+	.container:hover .front-back{transform: rotateY(-144deg);}
+	/*当鼠标滑倒container上面时候，里面的第一页变成了旋转－30度*/
+	.container:hover .page1{transform: rotateY(-30deg);}
+	.container:hover .page2{transform: rotateY(-35deg);}
+	.container:hover .page3{transform: rotateY(-110deg);}
+	.container:hover .page4{transform: rotateY(-130deg);}
+	.container:hover .page5{transform: rotateY(-140deg);}
+
+
+	</style>
+</head>
+<body>
+<div style="height: 199px;font-size: 40px;line-height: 199px;text-align: center;">3D Book</div>
+<div class="container">
+	<!-- 书脊 -->
+	<div class="spine"></div>
+	<!-- 封底 -->
+	<div class="back"></div>
+	<!-- 内页 -->
+	<div class="page page1"></div>
+	<div class="page page2">
+		<p>Hi!</p>
+		<p>I'm Harry Potter</p>
+		<p>Welcome to the magic world!</p>
+	</div>
+	<div class="page page3"></div>
+	<div class="page page4"></div>
+	<div class="page page5"></div>
+	<!-- 封面 -->
+
+	<div class="front-back"></div>
+	<div class="front"></div>
+	<!-- 封面的背面 -->
+</div>
+</body>
+</html>
+
+
