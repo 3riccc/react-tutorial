@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo5</title>
+	<style>
+		html,body{
+			height: 100%;
+			margin:0;
+		}
+		.container{
+			background-image: url(5-1.png);
+			background-size: cover;
+			background-position: center;
+			height: 100%;
+			overflow: hidden;
+		}
+		.tt{
+			margin:1.52rem auto 0;
+			width: 3.24rem;
+			height: 0.7rem;
+			border:0.02rem solid #fff;
+			font-size: 0.3rem;
+			line-height: 0.7rem;
+			color: #fff;
+			white-space: nowrap;
+			text-align: center;
+			font-style: italic;
+		}
+		.cnt{
+			width: 100%;
+			margin-top: 2.26rem;
+			color: #fff;
+			font-size: 0.29rem;
+			line-height: 0.53rem;
+			white-space: nowrap;
+			text-align: center;
+			font-style: italic;
+			background-color: rgba(0,0,0,0.5);
+		}
+	</style>
+	<script>
+		//窗口的宽高
+		var wWidth = window.innerWidth,
+			wHeight = window.innerHeight,
+			//设计稿的宽高，此处需要填入
+			myWidth = 406,
+			myHeight = 608;
+		// 根据高度等比缩放
+		var rem100 = 100 * wHeight / myHeight;
+		// 根据宽度等比缩放
+		// var rem100 = 100 * wWigth / myWidth;
+		//dom树加载完毕后执行
+		document.addEventListener('DOMContentLoaded',function(){
+			document.querySelector("html").style.fontSize = rem100 + 'px';
+        },false);
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="tt">
+			前端该玩的50个DEMO
+		</div>
+		<div class="cnt">
+			移动端的适配
+		</div>
+	</div>
+</body>
+</html>

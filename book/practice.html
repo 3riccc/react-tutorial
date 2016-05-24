@@ -4,20 +4,47 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style>
-	.abc{
-		width: 100px;
-		height: 100px;
-		background-color: black;
-		animation:abcabc 1s;
-		/*animation-fill-mode:forwards;*/
-	}
-	@keyframes abcabc{
-		from{background-color: black;}
-		to{background-color: red;}
-	}
+	
 	</style>
 </head>
 <body>
-	<div class="abc"></div>
+	<canvas width="400" height="400" id="bag"></canvas>
+	<script>
+        var canvas = document.getElementById("bag");
+        ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#000";
+        ctx.fillRect(0,0,400,400);
+        
+        
+
+        
+        function clearCircle1(x1,y1,x2,y2,radius){
+            
+            ctx.save();
+            ctx.beginPath();
+            
+            
+            var xCha = x2 - x1;
+            var yCha = y2 - y1;
+            var startAng = Math.atan(yCha / xCha) + Math.PI;
+            var zCha = Math.sqrt(xCha*xCha + yCha* yCha);
+            var sin = yCha / zCha;
+            var cos = xCha / zCha;
+            ctx.arc(x1,y1,radius,startAng-0.5*Math.PI,startAng+0.5*Math.PI,false);
+            ctx.lineTo(x2 + (radius * sin),y2 - (radius * cos));
+            ctx.arc(x2,y2,radius,startAng+0.5*Math.PI,startAng-0.5*Math.PI,false);
+            ctx.lineTo(x1 - (radius * sin),y1  + (radius * cos));
+            ctx.stroke();
+            
+            
+            ctx.clip();
+            ctx.clearRect(0,0,400,400);
+            
+            ctx.closePath()
+            ctx.restore();
+        }
+        clearCircle1(50,140,100,230,30)
+
+    </script>
 </body>
 </html>
