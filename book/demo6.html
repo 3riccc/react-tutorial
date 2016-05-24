@@ -3,8 +3,74 @@
 <head>
 	<meta charset="UTF-8">
 	<title>demo6</title>
+	<style>
+		.myAlert{
+			width: 300px;
+			height: 150px;
+			background:no-repeat center/cover;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -150px;
+			margin-top: -75px;
+		}
+		#alertDefault{
+			width: 300px;
+			border:1px solid #000;
+			text-align: center;
+			line-height: 150px;
+			display: none;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -150px;
+			margin-top: -75px;
+
+		}
+	</style>
 </head>
 <body>
-	
+	<button id="btn">弹窗按钮</button>
+	<div id="alertDefault">加载中...</div>
+	<script>
+		window.onload = function(){
+			//选中按钮并添加事件
+			var btn = document.querySelector("#btn");
+			btn.addEventListener('click',function(){
+				myAlert()
+			})
+			//弹框的代理函数
+			function myAlertProxy(){
+				//先显示弹框
+				var divDefault = document.getElementById("alertDefault");
+				divDefault.style.display = "block"
+				//加载图片
+				var myImage = new Image();
+				myImage.src="6.png";
+				//当图片加载完成
+				myImage.onload = function(){
+					//隐藏默认图片
+					divDefault.style.display = "none";
+					//调用本体
+					myAlert()
+				}
+			}
+			//弹窗的函数
+			function myAlert(){
+				//创造元素
+				var div = document.createElement('div');
+				//设置元素样式
+				div.setAttribute("class","myAlert");
+				//设置背景图片
+				div.style.backgroundImage = "url(6.png)";
+				//将创造的元素加入文档
+				document.body.appendChild(div)
+				//3秒后弹框消失
+				setTimeout(function(){
+					document.body.removeChild(div)
+				},3000)
+			}
+		}
+	</script>
 </body>
 </html>
