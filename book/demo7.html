@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo7</title>
+	<style>
+		.container{
+			width: 600px;
+			height: 500px;
+			margin:0 auto;
+		}
+		.left,.right{
+			box-sizing: border-box;
+			width: 300px;
+			float: left;
+			height: 500px;
+			border: 1px solid #000;
+		}
+		.box{
+			margin-top: 100px;
+			width: 300px;
+			height: 300px;
+			background-image: url(7-0.png);
+			background-size: cover;
+			overflow: hidden;
+		}
+		.box .word{
+			font-size: 60px;
+			color: #fff;
+			margin-top: 120px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="left">
+			<select name="background" id="background">
+				<option value="0">背景1</option>
+				<option value="1">背景2</option>
+				<option value="2">背景3</option>
+			</select>
+			<br>
+			<input type="text" name="cnt" placeholder="中心文字" id="input">
+			<br>
+			<select name="font" id="font">
+				<option value="0">字体1</option>
+				<option value="1">字体2</option>
+				<option value="2">字体3</option>
+			</select>
+		</div>
+		<div class="right">
+			<div class="box">
+				<div class="word">中心文字</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		window.onload = function(){
+			var back = document.getElementById("background");
+			var input = document.getElementById("input");
+			var font = document.getElementById("font");
+			// 当它们发生改变时，通知中介者
+			back.addEventListener("change",function(){
+				mediator(this);
+			})
+			input.addEventListener("change",function(){
+				mediator(this);
+			})
+			font.addEventListener("change",function(){
+				mediator(this);
+			})
+			//定义中介者
+			var mediator = function(ele){
+				//选中要改变的元素
+				var box = document.querySelector(".box");
+				var word = document.querySelector(".word");
+				//更改背景
+				if(ele.name == "background"){
+					console.log(box)
+					box.style.backgroundImage = "url(7-"+ele.value+".png)";
+				}
+				//更改文字内容
+				else if(ele.name == "cnt"){
+					word.innerHTML = ele.value;
+				}
+				//更改字体
+				else if(ele.name == "font"){
+					var fontList = ["'Times New Roman', Times, serif","Georgia, serif","Courier New"]
+					word.style.fontFamily = fontList[ele.value]
+				}
+			}
+
+		}
+	</script>
+</body>
+</html>
