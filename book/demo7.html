@@ -2,96 +2,49 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>demo7</title>
-	<style>
-		.container{
-			width: 600px;
-			height: 500px;
-			margin:0 auto;
-		}
-		.left,.right{
-			box-sizing: border-box;
-			width: 300px;
-			float: left;
-			height: 500px;
-			border: 1px solid #000;
-		}
-		.box{
-			margin-top: 100px;
-			width: 300px;
-			height: 300px;
-			background-image: url(7-0.png);
-			background-size: cover;
-			overflow: hidden;
-		}
-		.box .word{
-			font-size: 60px;
-			color: #fff;
-			margin-top: 120px;
-			text-align: center;
-		}
-	</style>
+	<title></title>
 </head>
 <body>
-	<div class="container">
-		<div class="left">
-			<select name="background" id="background">
-				<option value="0">背景1</option>
-				<option value="1">背景2</option>
-				<option value="2">背景3</option>
-			</select>
-			<br>
-			<input type="text" name="cnt" placeholder="中心文字" id="input">
-			<br>
-			<select name="font" id="font">
-				<option value="0">字体1</option>
-				<option value="1">字体2</option>
-				<option value="2">字体3</option>
-			</select>
-		</div>
-		<div class="right">
-			<div class="box">
-				<div class="word">中心文字</div>
-			</div>
-		</div>
-	</div>
+	<button id="btn1">按钮1</button>
+	<button id="btn2">按钮2</button>
+	<button id="btn3">按钮3</button>
 	<script>
-		window.onload = function(){
-			var back = document.getElementById("background");
-			var input = document.getElementById("input");
-			var font = document.getElementById("font");
-			// 当它们发生改变时，通知中介者
-			back.addEventListener("change",function(){
-				mediator(this);
-			})
-			input.addEventListener("change",function(){
-				mediator(this);
-			})
-			font.addEventListener("change",function(){
-				mediator(this);
-			})
-			//定义中介者
-			var mediator = function(ele){
-				//选中要改变的元素
-				var box = document.querySelector(".box");
-				var word = document.querySelector(".word");
-				//更改背景
-				if(ele.name == "background"){
-					console.log(box)
-					box.style.backgroundImage = "url(7-"+ele.value+".png)";
-				}
-				//更改文字内容
-				else if(ele.name == "cnt"){
-					word.innerHTML = ele.value;
-				}
-				//更改字体
-				else if(ele.name == "font"){
-					var fontList = ["'Times New Roman', Times, serif","Georgia, serif","Courier New"]
-					word.style.fontFamily = fontList[ele.value]
-				}
-			}
-
+	window.onload = function(){
+		function funA (){
+			console.log("函数A，点击按钮1、2时执行")
 		}
+		function funB (){
+			console.log("函数B，点击按钮3时执行")
+		}
+
+		//通知服务器的函数
+		function informServer(btnName){
+			//发起http请求
+			(new Image).src="http://someSever.com?name=" + btnName + "&time" + new Date().getTime();
+		}
+		//通过原型链进行装饰
+		Function.prototype.after = function(fn){
+			var that = this;
+			var fun = function(){
+				that.apply(this,arguments);
+				fn.apply(this, arguments);
+			}
+			return fun;
+		}
+		//调用原型链装饰
+		funA = funA.after(function(){
+			informServer("funA");
+		});
+		funB = funB.after(function(){
+			informServer("funB");
+		});
+
+		//为三个按钮绑定点击事件
+		document.querySelector("#btn1").addEventListener("click",funA);
+		document.querySelector("#btn2").addEventListener("click",funA);
+		document.querySelector("#btn3").addEventListener("click",funB);
+	}
+
 	</script>
 </body>
 </html>
