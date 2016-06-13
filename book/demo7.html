@@ -9,41 +9,41 @@
 	<button id="btn2">按钮2</button>
 	<button id="btn3">按钮3</button>
 	<script>
-	window.onload = function(){
-		function funA (){
-			console.log("函数A，点击按钮1、2时执行")
-		}
-		function funB (){
-			console.log("函数B，点击按钮3时执行")
-		}
-
-		//通知服务器的函数
-		function informServer(btnName){
-			//发起http请求
-			(new Image).src="http://someSever.com?name=" + btnName + "&time" + new Date().getTime();
-		}
-		//通过原型链进行装饰
-		Function.prototype.after = function(fn){
-			var that = this;
-			var fun = function(){
-				that.apply(this,arguments);
-				fn.apply(this, arguments);
-			}
-			return fun;
-		}
-		//调用原型链装饰
-		funA = funA.after(function(){
-			informServer("funA");
-		});
-		funB = funB.after(function(){
-			informServer("funB");
-		});
-
-		//为三个按钮绑定点击事件
-		document.querySelector("#btn1").addEventListener("click",funA);
-		document.querySelector("#btn2").addEventListener("click",funA);
-		document.querySelector("#btn3").addEventListener("click",funB);
+window.onload = function(){
+	function funA (){
+		console.log("函数A，点击按钮1、2时执行")
 	}
+	function funB (){
+		console.log("函数B，点击按钮3时执行")
+	}
+
+	//通知服务器的函数
+	function informServer(btnName){
+		//发起http请求
+		(new Image).src="http://someSever.com?name=" + btnName + "&time" + new Date().getTime();
+	}
+	//通过原型链进行装饰
+	Function.prototype.after = function(fn){
+		var that = this;
+		var fun = function(){
+			that.apply(this,arguments);
+			fn.apply(this, arguments);
+		}
+		return fun;
+	}
+	//调用原型链装饰
+	funA = funA.after(function(){
+		informServer("funA");
+	});
+	funB = funB.after(function(){
+		informServer("funB");
+	});
+
+	//为三个按钮绑定点击事件
+	document.querySelector("#btn1").addEventListener("click",funA);
+	document.querySelector("#btn2").addEventListener("click",funA);
+	document.querySelector("#btn3").addEventListener("click",funB);
+}
 
 	</script>
 </body>
