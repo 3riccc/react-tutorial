@@ -6,103 +6,92 @@
 	<style>
 		html,body{height: 100%;margin:0;}
 		body{background-color: #000;overflow: hidden;}
-		.input{position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);width: 500px;height: 80px;text-align: center;font-size: 50px;background-color: #000;border: none;color: #fff;outline:none;border-bottom: 1px solid #eee;z-index: 100;}
-		.code{font-size: 20px;font-weight: bolder;width:15px; line-height:1em;color: green;position: absolute;left: 0;text-align: center;}
-		.codeShadow{width: 20px;height: 20em;position: absolute;background: linear-gradient(to top,transparent, #000);bottom: 0;animation-timing-function: linear;}
-		/*@keyframes codeFlow{
-			0%{border-top: 0em solid #000;border-bottom: 100em solid #000;}
-			100%{border-top: 100em solid #000;border-bottom: 0em solid #000;}
-		}*/
+		.input{position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);width: 500px;height: 80px;text-align: center;font-size: 50px;background-color: #000;border: none;color: #fff;outline:none;border-bottom: 1px solid #eee;z-index: 100;background-color: transparent;}
+		.code{font-size: 20px;font-weight: bolder;width:20px; line-height:1em;color: green;position: absolute;text-align: center;}
+		.codeShadow{width: 20px;height: 300px;position: absolute;background: linear-gradient(to top,transparent, #000);bottom: 0;animation-timing-function: linear;}
 	</style>
 </head>
 <body>
-	<input class="input" type="text" placeholder="Input Your Username">
+	<input class="input" type="text" placeholder="Input Your Username" autofocus="autofocus">
 	<script>
+	window.shadowLen = 300;
+	window.shadowWidth = 20;
+	window.fontSize = 20;
+	/**
+	 * 创建特效的函数
+	 * @param  {[number:pixel]} leftPos [距离屏幕左边的距离，需要调用时随机生成]
+	 */
+	function createEffect(leftPos){
+		createText(leftPos);
+		createShadow(leftPos,window.shadowLen);
+	}
+	/**
+	 * 创建文字内容
+	 * @param  {[num]} left [距离屏幕左边的距离]
+	 */
+	function createText(left){
+		//获取随即字符串，传入窗口高度和每个字的大小
+		var text = getRanText();
+		//以下代码创建了一个div并放入body下
+		var div = document.createElement("div");
+		div.setAttribute("class","code");
+		div.style.left=left+'px';
+		div.innerHTML = text;
+		document.body.appendChild(div)
+	}
+	/**
+	 * 创建动画效果
+	 * @param  {[type]} height [显示框高度]
+	 */
+	function createAni(height){
+		//创建动画
+		var style = document.createElement("style");
+		style.innerHTML = '@keyframes codeFlow{' +
+			'0%{bottom:0}' +
+			'100%{bottom: -'+ (height + window.innerHeight) +'px}' +
+		'}';
+		document.head.appendChild(style);
+	}
+	/**
+	 * 创建阴影和动画效果
+	 * @param  {[number]} left [阴影距离左边的距离]
+	 * @param  {[number]} height [显示框高度]
+	 */
+	function createShadow(left,height){
+		var div = document.createElement("div");
+		div.setAttribute("class","codeShadow");
+		div.style.left=left + "px";
+		div.style.borderTop = window.innerHeight + 'px solid #000';
+		div.style.borderBottom = window.innerHeight + 'px solid #000';
+		div.style.animation = 'codeFlow 5s linear infinite';
+		document.body.appendChild(div);
+	}
+	/**
+	 * 生成随即字符串的函数
+	 * @param  {[num]} size   [每个字的字体大小，这个和屏幕高度一起用于计算要生成多少个字]
+	 * @return {[string]}        [最终生成的字符串]
+	 */
+	function getRanText(size){
+		//根据窗口高度和字体计算每个字符串要包含多少个字母
+		var textNum = Math.floor(window.innerHeight/window.fontSize) + 5;
+		var str = "";
+		for(var i=0;i < textNum;i++){
+			//使用ASCII码随机生成26个字母
+			var ascii = Math.floor(Math.random()*26) + 65;
+			str += String.fromCharCode(ascii) + " ";
+		}
+		return str;
+	}
+	//  开始执行
 	window.onload = function(){
-		window.shadowLen = 200;
-		window.shadowWidth = 20;
-		window.effectTime = 0;
-		/**
-		 * 创建特效的函数
-		 * @param  {[number:pixel]} leftPos [距离屏幕左边的距离，需要调用时随机生成]
-		 */
-		function createEffect(leftPos){
-			window.effectTime ++;
-			let time = window.effectTime;
-			createText(leftPos,time);
-			createShadow(leftPos,window.shadowLen,time);
-			setTimeout(function(){
-				delByTime(time);
-				createEffect(leftPos,window.shadowLen);
-			},5000)
-		}
-		function delByTime(time){
-			var div = document.getElementById("div"+time);
-			var style = document.getElementById('style'+time);
-			var text = document.getElementById('text'+time);
-			document.body.removeChild(div);
-			document.body.removeChild(text);
-			document.head.removeChild(style);
-
-
-		}
-		/**
-		 * 创建文字内容
-		 * @param  {[num]} left [距离屏幕左边的距离]
-		 */
-		function createText(left,time){
-			//获取随即字符串，传入窗口高度和每个字的大小
-			var text = getRanText(window.innerHeight,20);
-			//以下代码创建了一个div并放入body下
-			var div = document.createElement("div");
-			div.setAttribute("class","code");
-			div.style.left=left+'px';
-			div.innerHTML = text;
-			div.setAttribute("id","text"+time);
-			document.body.appendChild(div)
-		}
-		/**
-		 * 创建阴影和动画效果
-		 * @param  {[number]} left [阴影距离左边的距离]
-		 */
-		function createShadow(left,height,time){
-			//创建动画
-			var style = document.createElement("style");
-			style.setAttribute("id","style"+time)
-			style.innerHTML = '@keyframes abc{' +
-				'0%{bottom:0}' +
-				'100%{bottom: -'+ (height + window.innerHeight) +'px}' +
-			'}';
-			document.head.appendChild(style);
-
-			var div = document.createElement("div");
-			div.setAttribute("class","codeShadow");
-			div.setAttribute("id",'div'+time);
-			div.style.left=left + "px";
-			div.style.borderTop = window.innerHeight + 'px solid #000';
-			div.style.borderBottom = window.innerHeight + 'px solid #000';
-			div.style.animation = 'abc 5s linear';
-			document.body.appendChild(div);
-		}
-		/**
-		 * 声称随即字符串的函数
-		 * @param  {[num]} height [一般来说会默认传进来屏幕高度]
-		 * @param  {[num]} size   [每个字的字体大小，这个和屏幕高度一起用于计算要生成多少个字]
-		 * @return {[string]}        [最终生成的字符串]
-		 */
-		function getRanText(height,size){
-			var textNum = Math.floor(height/size) + 5;
-			var str = "";
-			for(var i=0;i < textNum;i++){
-				var ascii = Math.floor(Math.random()*26) + 65;
-				str += String.fromCharCode(ascii) + " ";
-			}
-			return str;
-		}
-
+		// 创建动画
+		createAni(window.shadowLen);
+		// 根据屏幕宽度，获取阴影个数
 		var shadowNum = Math.floor(window.innerWidth / window.shadowWidth);
+		// 依次为每个动画创建随机的开始时间
 		for(let i=0;i<shadowNum;i++){
 			setTimeout(function(){
+				//创建效果
 				createEffect(i * window.shadowWidth,window.shadowLen);
 			},Math.random() * 5000)
 		}
