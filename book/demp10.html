@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ha</title>
+</head>
+<body>
+	<input type="text" my-model="name">
+	<input type="text" my-model="name2">
+	<span my-bind="name"></span>
+	<script>
+	window.onload = function(){
+		var modelDoms = document.querySelectorAll('[my-model]');
+		var modelList = [];
+		for(let i=0;i<modelDoms.length;i++){
+			// 获取当前model名字
+			let modelName = modelDoms[i].getAttribute("my-model");
+			console.log(modelName);
+			for(let j=0;j<modelList.length;i++){
+				// model列表中不存在则增加
+				if(modelList[j] == modelName){
+					break;
+				}else if(j == modelList.length-1){
+					modelList.push(modelName)
+				}
+			}
+		}
+		console.log(modelList);
+	}
+	</script>
+</body>
+</html>
